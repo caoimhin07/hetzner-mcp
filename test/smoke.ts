@@ -80,6 +80,8 @@ async function main(): Promise<void> {
     assert("cost: volume resize is billed", classifyCost("cloud", "POST", "/volumes/9/actions/resize").billed),
     assert("cost: poweron is free", !classifyCost("cloud", "POST", "/servers/9/actions/poweron").billed),
     assert("cost: list is free", !classifyCost("cloud", "GET", "/servers").billed),
+    assert("cost: server create with query is billed", classifyCost("cloud", "POST", "/servers?foo=bar").billed),
+    assert("cost: server create without leading slash is billed", classifyCost("cloud", "POST", "servers").billed),
   ];
 
   // Live free reads across all three surfaces.
