@@ -92,6 +92,9 @@ function unitChecks(): Row[] {
   const cost = (name: string, got: boolean, want: boolean) =>
     rows.push({ group: "cost-guard", name, detail: `billed=${got}`, status: got === want ? "PASS" : "FAIL" });
   cost("POST /servers is billed", classifyCost("cloud", "POST", "/servers").billed, true);
+  cost("POST /servers?foo=bar is billed", classifyCost("cloud", "POST", "/servers?foo=bar").billed, true);
+  cost("POST /servers#frag is billed", classifyCost("cloud", "POST", "/servers#frag").billed, true);
+  cost("POST servers without leading slash is billed", classifyCost("cloud", "POST", "servers").billed, true);
   cost("POST /ssh_keys is free", classifyCost("cloud", "POST", "/ssh_keys").billed, false);
   cost("DELETE /servers/1 is not billed", classifyCost("cloud", "DELETE", "/servers/1").billed, false);
   cost("POST /storage_boxes is billed", classifyCost("storagebox", "POST", "/storage_boxes").billed, true);
